@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        body {
+            font-family: monospace;
+            font-size: 18px;
+        }
+
+        div.center {
+            margin-left: auto;
+            margin-right: auto;
+            width: 80%;
+        }
+    </style>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    var alphabet = ['A', 'C', 'E', 'D', 'G', 'I', 'H', 'K', 'M', 'L', 'O', 'N', 'P', 'S', 'R', 'U', 'T', 'Z'];
+    var solution = ['T', 'H', 'E', 'S', 'E', 'C', 'O', 'N', 'D', 'A', 'N', 'N', 'U', 'A', 'L', 'T', 'R', 'I', 'P', 'I', 'T', 'A', 'M', 'A', 'Z', 'I', 'N', 'G', 'H', 'A', 'C', 'K'];
+    var unSolvedPositions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function showSolution() {
+        $('#explanation').fadeIn(3000); // css('display', 'block');
+
+    }
+
+    function animateSolution() {
+        var indexOfRandomUnsolvedPosition = getRandomInt(0, unSolvedPositions.length - 1);
+        var randomUnsolvedPosition = unSolvedPositions[indexOfRandomUnsolvedPosition];
+        var indexOfRandomLetter = getRandomInt(0, alphabet.length - 1);
+
+        $('#p' + randomUnsolvedPosition).fadeOut('fast');
+        $('#p' + randomUnsolvedPosition).html(alphabet[indexOfRandomLetter]);
+        $('#p' + randomUnsolvedPosition).fadeIn('fast');
+
+        if (alphabet[indexOfRandomLetter] == solution[randomUnsolvedPosition]) {
+            $('#p' + randomUnsolvedPosition).animate({ backgroundColor:"#ff0000"}, 800);
+            $('#p' + randomUnsolvedPosition).animate({ backgroundColor:"#ffffff"}, 800);
+            unSolvedPositions.splice(indexOfRandomUnsolvedPosition, 1);
+        }
+
+        if (unSolvedPositions.length > 0) {
+            setTimeout("animateSolution()", 100);
+        } else {
+            setTimeout("showSolution()", 10000);
+        }
+    }
+
+    $(document).ready(animateSolution());
+</script>
+
+<div class="center">
+    <h1>Got Hack?</h1>
+</div>
+
+<div class="center">
+    <span>S</span>
+    <span>B</span>
+    <span>A</span>
+    <span>R</span>
+    <span>&nbsp;</span>
+
+    <span>A</span>
+    <span>T</span>
+    <span>M</span>
+    <span>L</span>
+    <span>&nbsp;</span>
+
+    <span>H</span>
+    <span>G</span>
+    <span>L</span>
+    <span>L</span>
+    <span>&nbsp;</span>
+
+    <span>U</span>
+    <span>G</span>
+    <span>I</span>
+    <span>S</span>
+    <span>&nbsp;</span>
+
+    <span>Q</span>
+    <span>D</span>
+    <span>N</span>
+    <span>D</span>
+    <span>&nbsp;</span>
+
+    <span>S</span>
+    <span>G</span>
+    <span>J</span>
+    <span>G</span>
+    <span>&nbsp;</span>
+
+    <span>Z</span>
+    <span>D</span>
+    <span>L</span>
+    <span>K</span>
+    <span>&nbsp;</span>
+
+    <span>B</span>
+    <span>G</span>
+    <span>T</span>
+    <span>F</span>
+</div>
+
+<div class="center" id="puzzle">
+    <span id="p0">S</span>
+    <span id="p1">B</span>
+    <span id="p2">A</span>
+    <span id="p3">R</span>
+    <span>&nbsp;</span>
+
+    <span id="p4">A</span>
+    <span id="p5">T</span>
+    <span id="p6">M</span>
+    <span id="p7">L</span>
+    <span>&nbsp;</span>
+
+    <span id="p8">H</span>
+    <span id="p9">G</span>
+    <span id="p10">L</span>
+    <span id="p11">L</span>
+    <span>&nbsp;</span>
+
+    <span id="p12">U</span>
+    <span id="p13">G</span>
+    <span id="p14">I</span>
+    <span id="p15">S</span>
+    <span>&nbsp;</span>
+
+    <span id="p16">Q</span>
+    <span id="p17">D</span>
+    <span id="p18">N</span>
+    <span id="p19">D</span>
+    <span>&nbsp;</span>
+
+    <span id="p20">S</span>
+    <span id="p21">G</span>
+    <span id="p22">J</span>
+    <span id="p23">G</span>
+    <span>&nbsp;</span>
+
+    <span id="p24">Z</span>
+    <span id="p25">D</span>
+    <span id="p26">L</span>
+    <span id="p27">K</span>
+    <span>&nbsp;</span>
+
+    <span id="p28">B</span>
+    <span id="p29">G</span>
+    <span id="p30">T</span>
+    <span id="p31">F</span>
+</div>
+
+<div class="center" style="margin-top: 20px; display: none;" id="explanation">
+    <div class="center" id="done">
+        Solution: "THE SECOND ANNUAL TRIPIT AMAZING HACK"
+    </div>
+    <div class="center" style="margin-top: 20px;">
+        Substitution cipher with keyword <b>GOTHACK</b> yields the following substitution alphabet:
+    </div>
+    <div class="center" style="margin-top: 20px;">
+        GOTH ACKB DEFI JLMN PQRS UVWX YZ
+    </div>
+    <div class="center">
+        ABCD EFGH IJKL MNOP QRST UVWX ZY
+    </div>
+    <div class="center" style="margin-top: 20px;">
+        Read more here: <a href="http://en.wikipedia.org/wiki/Substitution_cipher">http://en.wikipedia.org/wiki/Substitution_cipher</a>
+    </div>
+</div>
+</body>
+</html>
