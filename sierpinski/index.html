@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div>
+    <input id="iterations" type="text" name="iterations"/>
+    <button onclick="sierpinksi.init();">Go!</button>
+</div>
+
+<canvas id="sierpinskiCanvas" width="600" height="600" style="border:1px solid #000000;"></canvas>
+<script type="text/javascript">
+    var sierpinksi = (function () {
+        var _outerTriangle = Array()
+        var _canvas = null;
+        var _ctx = null;
+        var _iterations = 100000;
+        var _colorValues = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+        var _chosenColor = '';
+
+        var _drawPoint = function (x, y) {
+            setTimeout(function () {
+                _ctx.fillStyle = _chosenColor;
+                _ctx.fillRect(x, y, 1, 1);
+            }, 1);
+        };
+
+        var _midpoint = function (p1, p2) {
+            var new_x = (p1[0] + p2[0]) / 2;
+            var new_y = (p1[1] + p2[1]) / 2;
+            return [new_x, new_y];
+        };
+
+        return {
+            init: function () {
+                _canvas = document.getElementById("sierpinskiCanvas");
+                _ctx = _canvas.getContext("2d");
+                _ctx.clearRect(0, 0, _ctx.canvas.clientWidth, _ctx.canvas.clientHeight);
+
+                var pointA = [(_ctx.canvas.clientWidth / 2), 0];
+                var pointB = [_ctx.canvas.clientWidth, _ctx.canvas.clientHeight];
+                var pointC = [0, _ctx.canvas.clientHeight];
+                _outerTriangle = [pointA, pointB, pointC];
+
+                _chosenColor = '#';
+
+                for (var i = 0; i < 6; i++) {
+                    var random_index = Math.floor(Math.random() * _colorValues.length);
+                    _chosenColor += _colorValues[random_index];
+                }
+
+                _drawPoint(pointA[0], pointA[1]);
+                _drawPoint(pointB[0], pointB[1]);
+                _drawPoint(pointC[0], pointC[1]);
+
+                var midpoint = [(_ctx.canvas.clientWidth / 2), _ctx.canvas.clientHeight];
+
+                var iterations = parseInt(document.getElementById('iterations').value);
+
+                if (!isNaN(iterations)) {
+                    _iterations = iterations;
+                    console.log('Going around for ' + _iterations + ' times!');
+                }
+
+                for (var i = 0; i < _iterations; i++) {
+                    _drawPoint(midpoint[0], midpoint[1]);
+                    var random_index = Math.floor(Math.random() * 3);
+                    midpoint = _midpoint(midpoint, _outerTriangle[random_index]);
+                }
+                // alert('Done!');
+            }
+        }
+    })();
+    sierpinksi.init();
+</script>
+</body>
+</html>
