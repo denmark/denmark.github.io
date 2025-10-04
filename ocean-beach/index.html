@@ -41,9 +41,30 @@
         .swiper-button-prev {
             color: white;
         }
+        #audioControl {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: 1px solid white;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+        #audioControl:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
     </style>
 </head>
 <body>
+    <audio id="bgAudio" loop>
+        <source src="mp3/ocean-beach.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <button id="audioControl">▶️ Play Audio</button>
     <div class="wrapper">
         <div class="swiper">
             <div class="swiper-wrapper">
@@ -112,6 +133,20 @@
             autoplay: {
                 delay: 120000,
                 disableOnInteraction: false,
+            }
+        });
+
+        // Audio control
+        const audio = document.getElementById('bgAudio');
+        const audioButton = document.getElementById('audioControl');
+
+        audioButton.addEventListener('click', function() {
+            if (audio.paused) {
+                audio.play();
+                audioButton.textContent = '⏸ Pause Audio';
+            } else {
+                audio.pause();
+                audioButton.textContent = '▶️ Play Audio';
             }
         });
     </script>
