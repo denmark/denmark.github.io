@@ -61,7 +61,7 @@
 </head>
 <body>
     <audio id="bgAudio" loop>
-        <source src="mp3/ocean-beach.mp3" type="audio/mpeg">
+        <source src="mp3/ocean-beach.m4a" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     <button id="audioControl">▶️ Play Audio</button>
@@ -136,17 +136,55 @@
             }
         });
 
-        // Audio control
-        const audio = document.getElementById('bgAudio');
+        // Audio control with Web Audio API for seamless looping
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const audioButton = document.getElementById('audioControl');
+        let source = null;
+        let audioBuffer = null;
+        let isPlaying = false;
+
+        // Fetch and decode audio file
+        fetch(document.querySelector('audio source').src)
+            .then(response => response.arrayBuffer())
+            .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+            .then(buffer => {
+                audioBuffer = buffer;
+            })
+            .catch(e => console.error('Error loading audio:', e));
+
+        function playSound() {
+            if (!audioBuffer) return;
+
+            // Create new source for each playback
+            source = audioContext.createBufferSource();
+            source.buffer = audioBuffer;
+            source.loop = true;
+            source.connect(audioContext.destination);
+
+            // Start playback
+            source.start(0);
+            isPlaying = true;
+            audioButton.textContent = '⏸ Pause Audio';
+        }
+
+        function stopSound() {
+            if (source) {
+                source.stop(0);
+                source = null;
+            }
+            isPlaying = false;
+            audioButton.textContent = '▶️ Play Audio';
+        }
 
         audioButton.addEventListener('click', function() {
-            if (audio.paused) {
-                audio.play();
-                audioButton.textContent = '⏸ Pause Audio';
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+
+            if (!isPlaying) {
+                playSound();
             } else {
-                audio.pause();
-                audioButton.textContent = '▶️ Play Audio';
+                stopSound();
             }
         });
     </script>
